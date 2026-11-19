@@ -3,18 +3,22 @@ import { notFound } from "next/navigation";
 import { Avatar } from "@/components/avatar";
 import { BackLink } from "@/components/back-link";
 import { EmptyState } from "@/components/empty-state";
-import { IconCamera, IconLock } from "@/components/icons";
+import { IconCamera, IconLock, IconPlus } from "@/components/icons";
 import { ProgressBar } from "@/components/progress-bar";
 import { StatusBadge } from "@/components/status-badge";
 import { requireMembership } from "@/lib/auth";
 import { formatDate, isPast, relativeTime } from "@/lib/format";
+import { getTimeline } from "@/lib/logs";
 import { canManage, getProject } from "@/lib/projects";
+import { Timeline } from "./timeline";
 
-export default async function ProjectPage({ params }: PageProps<"/projects/[id]">) {
+export default async function ProjectPage({ params, searchParams }: PageProps<"/projects/[id]">) {
   const { id } = await params;
+  const { posted } = await searchParams;
   const m = await requireMembership();
   const project = await getProject(id);
   if (!project) notFound();
+  const entries = await getTimeline(project.id);
 
   const manage = canManage(project, m);
   const overdue = project.status !== "done" && isPast(project.target_date);
@@ -106,11 +110,27 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[id]"
         </section>
       )}
 
-      <h2 className="mb-3 mt-6 font-semibold">Updates</h2>
-      <EmptyState icon={<IconCamera className="h-7 w-7" />} title="No updates yet">
-        Posting updates with photos is coming in the next release. Each update will show here with
-        its time.
-      </EmptyState>
+      {posted && (
+        <p role="status" className="mt-4 rounded-xl bg-ok/12 px-4 py-3 text-sm font-medium text-ok">
+          ✓ Update posted
+        </p>
+      )}
+
+      <div className="mb-3 mt-6 flex items-center justify-between">
+        <h2 className="font-semibold">
+          Updates {entries.length > 0 && <span className="font-normal text-muted">({entries.length})</span>}
+        </h2>
+        <Link href={`/log?project=${project.id}`} className="btn-primary min-h-10 px-4 text-sm">
+          <IconPlus className="h-4 w-4" /> Post update
+        </Link>
+      </div>
+      {entries.length ? (
+        <Timeline entries={entries} userId={m.user.id} isAdmin={m.role === "admin"} />
+      ) : (
+        <EmptyState icon={<IconCamera className="h-7 w-7" />} title="No updates yet">
+          Post the first update: what changed, what&apos;s next, and a photo if it helps.
+        </EmptyState>
+      )}
     </>
   );
 }

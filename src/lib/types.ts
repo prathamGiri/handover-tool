@@ -41,3 +41,18 @@ export type ProjectDetail = Project & {
   creator: Person | null;
   members: Person[];
 };
+
+export type LogPhoto = { id: string; storage_path: string; width: number | null; height: number | null; url: string };
+
+export type LogEntry = {
+  id: string;
+  body: string;
+  status: ProjectStatus | null;
+  progress: number | null;
+  created_at: string;
+  edited_at: string | null;
+  author: Person | null;
+  photos: LogPhoto[];
+};
+
+export type TimelineEntry = LogEntry & { relative: string; fallbackTime: string };

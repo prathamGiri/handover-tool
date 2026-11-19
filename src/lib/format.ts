@@ -28,3 +28,17 @@ export function isPast(date: string | null | undefined): boolean {
   if (!date) return false;
   return date < new Date().toISOString().slice(0, 10);
 }
+
+/** Server-side fallback for timestamps before the phone's time zone is known. */
+export function formatDateTimeUTC(iso: string): string {
+  return (
+    new Intl.DateTimeFormat("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "UTC",
+    }).format(new Date(iso)) + " UTC"
+  );
+}
