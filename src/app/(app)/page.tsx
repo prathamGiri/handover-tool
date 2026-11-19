@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
 import { IconDashboard } from "@/components/icons";
 import { PageHeader } from "@/components/page-header";
@@ -12,6 +13,9 @@ export default async function DashboardPage() {
       <EmptyState icon={<IconDashboard className="h-7 w-7" />} title="Your team dashboard">
         Every project&apos;s status, progress and latest update will appear here as a table you can
         share to WhatsApp.
+        <Link href="/projects/new" className="btn-primary mt-5 w-full">
+          Add a project
+        </Link>
       </EmptyState>
     </>
   );

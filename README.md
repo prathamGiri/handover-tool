@@ -12,8 +12,8 @@ deployable to Vercel. All three have free tiers that cover a 15-person team.
 | Phase | What | Status |
 |---|---|---|
 | 1 | Login with email code, create/join team via invite link, installable app shell, profile | ✅ Done |
-| 2 | Create projects, public/private projects with members | ⏳ Next |
-| 3 | Quick logging: text + camera/gallery photos, project timeline | |
+| 2 | Create projects, public/private projects with members | ✅ Done |
+| 3 | Quick logging: text + camera/gallery photos, project timeline | ⏳ Next |
 | 4 | Dashboard: cards on phone, table on desktop, filters, stale-project highlight | |
 | 5 | Share dashboard to WhatsApp as image and as formatted text | |
 | 6 | Optional: push reminders, weekly digest, comments, exports, app-store build | |

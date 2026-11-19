@@ -48,6 +48,14 @@ values ('10000000-0000-0000-0000-000000000002', (select id from t), 'Secret', tr
 insert into public.project_members (project_id, user_id)
 values ('10000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-00000000000b');
 select pg_temp.check((select created_at > '2001-01-01' from public.projects where name = 'Website'), 'project created_at set by server');
+
+-- The app creates projects with INSERT ... RETURNING (public and private).
+do $$ declare v uuid; begin
+  insert into public.projects (team_id, name) select id, 'Returned' from public.teams limit 1 returning id into v;
+  insert into public.projects (team_id, name, is_private) select id, 'Returned private', true from public.teams limit 1 returning id into v;
+  delete from public.projects where name like 'Returned%';
+  raise notice 'ok - create project and read it back';
+end $$;
 select pg_temp.check((select count(*) from public.profiles) = 3, 'alice sees her 3 teammates');
 
 -- Bob sees both, Carol only the public one, Dave none.
