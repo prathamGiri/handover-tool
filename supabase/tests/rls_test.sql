@@ -100,6 +100,13 @@ select pg_temp.check((select edited_at is not null and created_at > '2001-01-01'
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000b');
 insert into public.progress_logs (project_id, body) values ('10000000-0000-0000-0000-000000000002', 'Private update');
 select pg_temp.check((select count(*) from public.progress_logs) = 2, 'bob sees logs on both projects');
+select pg_temp.check((select count(*) from public.project_latest_logs) = 2, 'bob sees latest update of both projects');
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000c');
+select pg_temp.check((select count(*) from public.project_latest_logs) = 1
+                     and (select body from public.project_latest_logs) like 'Homepage%', 'carol sees latest update of public project only');
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000d');
+select pg_temp.check((select count(*) from public.project_latest_logs) = 0, 'other team sees no latest updates');
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000b');
 
 -- Only admins can reset the invite link.
 do $$ begin
