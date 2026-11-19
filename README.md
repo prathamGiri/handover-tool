@@ -59,7 +59,7 @@ Login codes sent locally appear in Mailpit at http://127.0.0.1:54324.
    `db push` only applies new ones.
 3. **Authentication → Email templates**: in both **Magic Link** and **Confirm
    signup**, replace the body with the contents of `supabase/templates/otp.html`
-   (it must contain `{{ .Token }}` so people get a 6-digit code instead of a link).
+   (it must contain `{{ .Token }}` so people get a code instead of a link).
 4. **Authentication → SMTP settings**: connect an email provider (for example
    [Resend](https://resend.com), free for 3,000 emails/month). Supabase's
    built-in email only delivers to your own Supabase account and a few
@@ -83,7 +83,7 @@ link, signs in with their email code, and adds the app to their home screen.
 ```
 src/
   app/
-    login/          email → 6-digit code sign-in
+    login/          email → one-time code sign-in
     onboarding/     set name, create or join a team
     join/[code]/    invite link landing page
     (app)/          signed-in area with bottom tab bar

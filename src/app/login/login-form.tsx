@@ -4,6 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+// Supabase lets each project choose a code length between 6 and 10 digits
+// (new hosted projects default to 8), so accept any of them.
+const MIN_CODE = 6;
+const MAX_CODE = 10;
+
 export function LoginForm({ next }: { next: string }) {
   const router = useRouter();
   const [step, setStep] = useState<"email" | "code">("email");
@@ -43,8 +48,8 @@ export function LoginForm({ next }: { next: string }) {
     e.preventDefault();
     setError(null);
     const token = code.replace(/\D/g, "");
-    if (token.length < 6) {
-      setError("Enter the 6-digit code from your email.");
+    if (token.length < MIN_CODE || token.length > MAX_CODE) {
+      setError("Enter the full code from your email.");
       return;
     }
     setBusy(true);
@@ -83,7 +88,7 @@ export function LoginForm({ next }: { next: string }) {
           {busy ? "Sending…" : "Send login code"}
         </button>
         <p className="text-center text-sm text-muted">
-          No password needed. We&apos;ll email you a 6-digit code.
+          No password needed. We&apos;ll email you a login code.
         </p>
       </form>
     );
@@ -101,11 +106,11 @@ export function LoginForm({ next }: { next: string }) {
           inputMode="numeric"
           autoComplete="one-time-code"
           pattern="[0-9]*"
-          maxLength={6}
-          placeholder="••••••"
-          className="field text-center text-2xl font-semibold tracking-[0.5em]"
+          maxLength={MAX_CODE}
+          placeholder="Enter code"
+          className="field text-center text-2xl font-semibold tracking-[0.3em] placeholder:text-base placeholder:font-normal placeholder:tracking-normal"
           value={code}
-          onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+          onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, MAX_CODE))}
           autoFocus
         />
       </div>
