@@ -49,12 +49,14 @@ Login codes sent locally appear in Mailpit at http://127.0.0.1:54324.
 
 ### 1. Supabase
 1. Create a free project at [supabase.com](https://supabase.com).
-2. Link it and push the schema:
+2. Link it and push the schema (already done for the live project):
    ```bash
    npx supabase login
    npx supabase link --project-ref <your-project-ref>
    npx supabase db push
    ```
+   Migration file names match the versions recorded on the live project, so
+   `db push` only applies new ones.
 3. **Authentication → Email templates**: in both **Magic Link** and **Confirm
    signup**, replace the body with the contents of `supabase/templates/otp.html`
    (it must contain `{{ .Token }}` so people get a 6-digit code instead of a link).
