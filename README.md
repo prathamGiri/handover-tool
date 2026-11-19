@@ -15,7 +15,7 @@ deployable to Vercel. All three have free tiers that cover a 15-person team.
 | 2 | Create projects, public/private projects with members | ✅ Done |
 | 3 | Quick logging: text + camera/gallery photos, project timeline | ✅ Done |
 | 4 | Dashboard: cards on phone, table on desktop, filters, stale-project highlight | ✅ Done |
-| 5 | Share dashboard to WhatsApp as image and as formatted text | ⏳ Next |
+| 5 | Share dashboard to WhatsApp as image and as formatted text | ✅ Done |
 | 6 | Optional: push reminders, weekly digest, comments, exports, app-store build | |
 
 The database schema and access rules for phases 1–3 are already in place

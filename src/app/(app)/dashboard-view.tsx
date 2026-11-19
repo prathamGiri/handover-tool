@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Avatar } from "@/components/avatar";
 import { IconLock } from "@/components/icons";
+import { ShareButton } from "@/components/share-sheet";
 import { ProgressBar } from "@/components/progress-bar";
 import { StatusBadge } from "@/components/status-badge";
 import type { DashboardRow } from "@/lib/dashboard";
@@ -26,13 +27,13 @@ export function DashboardView({
   userId,
   initial,
   staleDays,
-  toolbar,
+  teamName,
 }: {
   rows: DashboardRow[];
   userId: string;
   initial: DashboardFilters;
   staleDays: number;
-  toolbar?: (shown: DashboardRow[], filters: DashboardFilters) => React.ReactNode;
+  teamName: string;
 }) {
   const [f, setF] = useState<DashboardFilters>(initial);
   const shown = useMemo(() => applyFilters(rows, f, userId), [rows, f, userId]);
@@ -94,7 +95,7 @@ export function DashboardView({
             </button>
           )}
         </p>
-        {toolbar?.(shown, f)}
+        {shown.length > 0 && <ShareButton rows={shown} filters={f} teamName={teamName} staleDays={staleDays} />}
       </div>
 
       {shown.length === 0 ? (

@@ -5,6 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { EmptyState } from "@/components/empty-state";
 import { IconCamera, IconLock, IconPlus } from "@/components/icons";
 import { ProgressBar } from "@/components/progress-bar";
+import { ShareProject } from "@/components/share-project";
 import { StatusBadge } from "@/components/status-badge";
 import { requireMembership } from "@/lib/auth";
 import { formatDate, isPast, relativeTime } from "@/lib/format";
@@ -32,11 +33,22 @@ export default async function ProjectPage({ params, searchParams }: PageProps<"/
     <>
       <div className="flex items-center justify-between">
         <BackLink href="/projects" label="Projects" />
-        {manage && (
-          <Link href={`/projects/${project.id}/edit`} className="min-h-10 pt-4 text-sm font-semibold text-brand">
-            Edit
-          </Link>
-        )}
+        <div className="flex items-center gap-4">
+          <ShareProject
+            name={project.name}
+            status={project.status}
+            progress={project.progress}
+            owner={project.owner?.full_name ?? null}
+            latest={entries[0]?.body ?? null}
+            updated={entries[0]?.relative ?? null}
+            path={`/projects/${project.id}`}
+          />
+          {manage && (
+            <Link href={`/projects/${project.id}/edit`} className="min-h-10 pt-4 text-sm font-semibold text-brand">
+              Edit
+            </Link>
+          )}
+        </div>
       </div>
 
       <header className="pb-4 pt-2">

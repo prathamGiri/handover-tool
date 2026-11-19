@@ -26,7 +26,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/">) {
         }
       />
       {rows.length ? (
-        <DashboardView rows={rows} userId={user.id} initial={parseFilters(await searchParams)} staleDays={STALE_DAYS} />
+        <DashboardView rows={rows} userId={user.id} initial={parseFilters(await searchParams)} staleDays={STALE_DAYS} teamName={team.name} />
       ) : (
         <EmptyState icon={<IconDashboard className="h-7 w-7" />} title="Your team dashboard">
           Every project&apos;s status, progress and latest update will appear here, ready to share to WhatsApp.
